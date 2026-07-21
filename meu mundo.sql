@@ -68,4 +68,49 @@ on cidade.id_pais = pais.id_pais;
 select Nome from cidade
 where capital = 'Sim'; 
 
+-- Ex 3
+select * from pais
+where Expec_vida < 70;
 
+-- Ex 4
+select cidade.Nome, pais.Nome , pais.pop
+from cidade
+inner join pais on cidade.id_pais = pais.id_pais
+where cidade.capital = 'Sim'
+and pais.PIB > 1000;
+
+-- Ex 5
+select cidade.Nome, cidade.Pop
+from cidade
+inner join pais on cidade.id_pais = pais.id_pais
+inner join cidade_rio on cidade.id_cidade = cidade_rio.id_cidade --conectamos cidades aos rios que passam por elas.
+inner join rio on cidade_rio.id_rio = rio.id_rio --  trazemos os dados dos rios.
+where rio.Nome = 'St.Lawrence'
+    and capital = 'Sim';
+
+-- Ex 6
+SELECT AVG(Pop) -- AVG é a função de agregação para calcular a média da população
+FROM cidade
+WHERE capital = 'Não';
+
+-- Ex 7
+select AVG(PIB), continente from pais
+group by continente -- o SQL vai calcular a média do PIB agrupando os países por continente.
+
+-- Ex 8
+SELECT pais.Nome, MIN(rio.Comprimento)
+FROM pais
+INNER JOIN cidade ON pais.id_pais = cidade.id_pais
+INNER JOIN cidade_rio ON cidade.id_cidade = cidade_rio.id_cidade
+INNER JOIN rio ON cidade_rio.id_rio = rio.id_rio
+GROUP BY pais.Nome
+HAVING COUNT(rio.id_rio) >= 2;
+
+-- Ex 9
+SELECT Nome, PIB
+FROM pais
+WHERE PIB > (
+    SELECT PIB
+    FROM pais
+    WHERE Nome = 'Canada'
+);
